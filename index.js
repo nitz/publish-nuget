@@ -108,9 +108,8 @@ class Action {
                 res.setEncoding("utf8")
                 res.on("data", chunk => body += chunk)
                 res.on("end", () => {
-                    console.log(`Existing versions JSON: ${body}`)
+                    console.log(`Existing versions response: ${body}`)
                     const existingVersions = JSON.parse(body)
-                    console.log(`Existing versions: ${existingVersions}`)
                     if (existingVersions.versions.indexOf(this.version) < 0)
                         this._pushPackage(this.version, this.packageName)
                 })
