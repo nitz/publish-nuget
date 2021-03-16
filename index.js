@@ -16,6 +16,7 @@ class Action {
         this.nugetKey = process.env.INPUT_NUGET_KEY || process.env.NUGET_KEY
         this.nugetSource = process.env.INPUT_NUGET_SOURCE || process.env.NUGET_SOURCE
         this.includeSymbols = JSON.parse(process.env.INPUT_INCLUDE_SYMBOLS || process.env.INCLUDE_SYMBOLS)
+        this.skipBuild = JSON.parse(process.env.INPUT_SKIP_BUILD || process.env.SKIP_BUILD)
     }
 
     _printErrorAndExit(msg) {
@@ -57,7 +58,9 @@ class Action {
 
         fs.readdirSync(".").filter(fn => /\.s?nupkg$/.test(fn)).forEach(fn => fs.unlinkSync(fn))
 
-        this._executeInProcess(`dotnet build -c Release ${this.projectFile}`)
+        if (this.skipBuild == false) {
+            this._executeInProcess(`dotnet build -c Release ${this.projectFile}`)
+        }
 
         this._executeInProcess(`dotnet pack ${this.includeSymbols ? "--include-symbols -p:SymbolPackageFormat=snupkg" : ""} --no-build -c Release ${this.projectFile} -o .`)
 
