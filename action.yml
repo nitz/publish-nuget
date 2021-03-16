@@ -38,6 +38,10 @@ inputs:
         description: Flag to toggle pushing symbols along with nuget package to the server, disabled by default
         required: false
         default: false
+    SKIP_BUILD:
+        description: Flag to toggle skipping of the `nuget build` step.
+        required: false
+        default: false
 
 outputs:
     VERSION:
